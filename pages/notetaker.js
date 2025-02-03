@@ -9,8 +9,23 @@ import styles from "./notetaker.module.css";
 export default function NoteTaker() {
 
   return (
-    <div className={styles.app}>
-      <h1>Also Protected</h1>
+    <div className = {styles.app}>
+      <div className = {styles.container}> 
+        <div className = {styles.topBar}>
+          Top Bar
+        </div>
+        <div className = {styles.header}>
+          Notetaker
+        </div>
+        <div className = {styles.menu}>
+          Menu
+        </div>
+        <div className = {styles.content}>
+          <div>
+            Notes
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

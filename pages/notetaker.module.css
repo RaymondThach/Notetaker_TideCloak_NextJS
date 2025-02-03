@@ -1,3 +1,39 @@
 .app {
-    background-color: black;
+    position: absolute;
+    height: 99%;
+    width: 99.5%;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+    grid-template-rows: 2.5% 2.5% 95%;
+    gap: 2px;
+    grid-template-areas:
+        "topBar topBar"
+        "header header"
+        "menu content";
+    background-color: yellow;
+    min-height: 100%;
+}
+
+.topBar {
+    grid-area: topBar;
+    background-color: purple;
+}
+
+.header {
+    grid-area: header;
+    background-color: green;
+    text-align: center;
+}
+
+.menu {
+    grid-area: menu;
+    background-color: blue;
+}
+
+.content {
+    grid-area: content;
+    background-color: red;
 }
