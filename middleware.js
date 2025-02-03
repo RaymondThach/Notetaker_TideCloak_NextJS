@@ -6,7 +6,7 @@ import { verifyTideCloakToken } from '/lib/tideJWT';
 const routesRoles = [
   { URLStart: "/adminprotected", role: 'appAdmin' },
   { URLStart: "/notetaker", role: 'offline_access' },
-  { URLStart: "/protected", role: 'offline_access' },
+  { URLStart: "/protected", role: 'uma_authorization' },
 ];
 
 export async function middleware(req) {

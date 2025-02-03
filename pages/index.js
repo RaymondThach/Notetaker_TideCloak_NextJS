@@ -14,6 +14,7 @@ export default function HomePage() {
       else {
         // Otherwise redirect to Tidecloak Login form
         IAMService.doLogin();
+        console.log("not logged in");
       }
     });
   }, []);

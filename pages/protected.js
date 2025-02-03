@@ -54,7 +54,7 @@ export default function ProtectedPage() {
 
   const handleNav = () => {
     // Navigate to the notetaking application
-    IAMService.doLogout();
+    window.location.href = '/notetaker';
   };
 
 
