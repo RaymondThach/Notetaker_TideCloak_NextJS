@@ -1,4 +1,4 @@
-# Implementing a Notetaking using Next.JS and TideCloak following the below instructions
+# Implementing a Notetaking application using Next.JS and TideCloak following the below instructions
 
 # Securing applications using Next.JS and TideCloak
 

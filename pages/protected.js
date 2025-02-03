@@ -51,6 +51,13 @@ export default function ProtectedPage() {
     }
   };
 
+
+  const handleNav = () => {
+    // Navigate to the notetaking application
+    IAMService.doLogout();
+  };
+
+
   return (
     <div>
       <h1>Protected Page</h1>
@@ -69,6 +76,7 @@ export default function ProtectedPage() {
         </div>
       )}
 	  <p/>
+    <button onClick={handleNav}>Test Nav</button>
 	  <button onClick={handleLogout}>Logout</button>
     </div>
   );

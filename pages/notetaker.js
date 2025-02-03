@@ -4,11 +4,12 @@
 
 import React, { useEffect, useState } from "react";
 import IAMService from "/lib/IAMService";
+import styles from "./notetaker.module.css";
 
 export default function NoteTaker() {
 
   return (
-    <div>
+    <div className={styles.app}>
       <h1>Also Protected</h1>
     </div>
   );
