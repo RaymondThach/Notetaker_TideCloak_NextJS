@@ -1,3 +1,5 @@
+# Implementing a Notetaking using Next.JS and TideCloak following the below instructions
+
 # Securing applications using Next.JS and TideCloak
 
 So, you want to build the best digital platforms on the planet, without the burden of worrying about security, and simultaneously grant your users sovereignty over their identities? Great!
