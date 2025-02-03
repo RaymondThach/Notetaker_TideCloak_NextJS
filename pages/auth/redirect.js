@@ -7,6 +7,7 @@ export default function RedirectPage() {
     IAMService.initIAM((authenticated) => {
       window.location.href = "/protected";
     });
+    console.log("redirecting")
   }, []);
 
   return;

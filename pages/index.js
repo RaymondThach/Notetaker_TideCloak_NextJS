@@ -11,19 +11,10 @@ export default function HomePage() {
         // If already authenticated, skip screen
         window.location.href = "/auth/redirect";
       }
+      else {
+        // Otherwise redirect to Tidecloak Login form
+        IAMService.doLogin();
+      }
     });
   }, []);
-
-  const handleLogin = () => {
-    // Display and handle a login button
-    IAMService.doLogin();
-  };
-
-  return (
-    <div>
-      <h1>Welcome to My App</h1>
-      <p>This is a public page. Please log in to access protected content.</p>
-      <button onClick={handleLogin}>Login</button>
-    </div>
-  );
 }
