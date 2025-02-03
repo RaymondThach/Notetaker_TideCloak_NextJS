@@ -7,17 +7,26 @@ import IAMService from "/lib/IAMService";
 import styles from "./notetaker.module.css";
 
 export default function NoteTaker() {
+  
+  useEffect(() => {
+    // Re-init Keycloak in the browser (to read token, handle logout, etc.)
+    IAMService.initIAM();
+  }, []);
+
+  const handleLogout = () => {
+    IAMService.doLogout();
+  } 
 
   return (
     <div className = {styles.app}>
       <div className = {styles.container}> 
-        <div className = {styles.topBar}>
-          Top Bar
+        <div className = {styles.topMenu}>
+          <button className = {styles.logoutButton} onClick={handleLogout}>Logout</button>
         </div>
         <div className = {styles.header}>
           Notetaker
         </div>
-        <div className = {styles.menu}>
+        <div className = {styles.sideMenu}>
           Menu
         </div>
         <div className = {styles.content}>
