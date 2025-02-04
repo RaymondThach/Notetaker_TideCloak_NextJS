@@ -6,12 +6,37 @@ import React, { useEffect, useState } from "react";
 import IAMService from "/lib/IAMService";
 import styles from "./notetaker.module.css";
 
+// async function getUserId() {
+//   const test = await fetch("http://localhost:8000/notes/userId/raytest");
+//   const result = await test.json();
+//   console.log(result);
+// }
+
 export default function NoteTaker() {
-  
+  const [userName, setUserName] = useState();
+
+  async function createUser() {
+    const name = IAMService.getName();
+    await fetch('http://localhost:8000/notes/createUser', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        "userName": name
+      })
+    });
+    setUserName(name);
+  }
+
   useEffect(() => {
     // Re-init Keycloak in the browser (to read token, handle logout, etc.)
-    IAMService.initIAM();
+    IAMService.initIAM(() => {
+      createUser();
+    });
   }, []);
+
+  useEffect(() => {
+    console.log(userName);
+  }, [userName]);
 
   const handleLogout = () => {
     IAMService.doLogout();
