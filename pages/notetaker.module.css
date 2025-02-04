@@ -10,8 +10,8 @@
     grid-template-rows: 2.5% 2.5% 95%;
     gap: 2px;
     grid-template-areas:
-        "sideMenu topMenu"
         "sideMenu header"
+        "sideMenu topMenu"
         "sideMenu content";
     background-color: yellow;
     min-height: 100%;
@@ -20,14 +20,18 @@
 .topMenu {
     grid-area: topMenu;
     display: flex;
+    justify-content: flex-end;
     background-color: purple;
-    justify-content: center;
     align-items: center;
     padding: 5px; 
 }
 
+.createButton {
+    margin-right: 10%;
+}
+
 .logoutButton {
-    margin-left: auto;
+    margin-right: 1%;
 }
 
 .header {
@@ -45,3 +49,4 @@
     grid-area: content;
     background-color: red;
 }
+

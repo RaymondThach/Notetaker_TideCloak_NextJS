@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import IAMService from "/lib/IAMService";
 import styles from "./notetaker.module.css";
+import Modal from "./Modal";
 
 // async function getUserId() {
 //   const test = await fetch("http://localhost:8000/notes/userId/raytest");
@@ -14,7 +15,9 @@ import styles from "./notetaker.module.css";
 
 export default function NoteTaker() {
   const [userName, setUserName] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
+  // Create the authenticated user in the database if they don't exist there yet
   async function createUser() {
     const name = IAMService.getName();
     await fetch('http://localhost:8000/notes/createUser', {
@@ -27,6 +30,7 @@ export default function NoteTaker() {
     setUserName(name);
   }
 
+  // Reconnect to TideCloak and sync the authenticated user with the database on initial render
   useEffect(() => {
     // Re-init Keycloak in the browser (to read token, handle logout, etc.)
     IAMService.initIAM(() => {
@@ -34,22 +38,27 @@ export default function NoteTaker() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(userName);
-  }, [userName]);
+  // useEffect(() => {
+  //   console.log(userName);
+  // }, [userName]);
 
   const handleLogout = () => {
     IAMService.doLogout();
   } 
 
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  }
+
   return (
     <div className = {styles.app}>
       <div className = {styles.container}> 
-        <div className = {styles.topMenu}>
-          <button className = {styles.logoutButton} onClick={handleLogout}>Logout</button>
-        </div>
         <div className = {styles.header}>
           Notetaker
+        </div>
+        <div className = {styles.topMenu}>
+          <button className = {styles.createButton} onClick={handleModal}>Create Note</button>
+          <button className = {styles.logoutButton} onClick={handleLogout}>Logout</button>
         </div>
         <div className = {styles.sideMenu}>
           Menu
@@ -58,8 +67,12 @@ export default function NoteTaker() {
           <div>
             Notes
           </div>
+          { isOpen
+            ? <Modal setIsOpen={setIsOpen} userName = {userName}/>
+            : null
+          }
         </div>
-      </div>
+      </div>    
     </div>
   );
 }
