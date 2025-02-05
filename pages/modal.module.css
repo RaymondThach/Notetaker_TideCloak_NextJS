@@ -1,9 +1,70 @@
 .modal {
     position: absolute;
-    height: 50%;
-    width: 50%;
+    height: 80%;
+    width: 70%;
     background-color: aqua;
     top: 50%; 
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 2.5% 2.5% 3% 2.5% 3% 83% 2.5%;
+    gap: 2px;
+    grid-template-areas:
+        "topMenu"
+        "header"
+        "titleHeader"
+        "titleInput"
+        "noteHeader"
+        "noteInput"
+        "bottomMenu";
+    min-height: 100%;
+    background-color: yellow;
+    
+}
+
+.topMenu {
+    grid-area: topMenu;
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: blue;
+}
+
+.header {
+    grid-area: header;
+    text-align: center;
+    background-color: brown;
+}
+
+.titleHeader {
+    grid-area: titleHeader;
+    background-color: pink;
+}
+
+.titleInput {
+    grid-area: titleInput;
+    background-color: white;
+}
+
+.noteHeader {
+    grid-area: noteHeader;
+    background-color: purple;
+}
+
+.noteInput {
+    grid-area: noteInput;
+    background-color: white;
+}
+
+.bottomMenu {
+    grid-area: bottomMenu;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blueviolet;
 }
