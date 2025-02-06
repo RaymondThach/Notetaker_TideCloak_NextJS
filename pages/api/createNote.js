@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     }
     else {
       const data = JSON.parse(req.body);
+      console.log(data);
       const rowsAffected = await database.createNote(data);
       res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})
     }

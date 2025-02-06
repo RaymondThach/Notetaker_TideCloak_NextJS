@@ -1,12 +1,14 @@
 import styles from "./modal.module.css";
 import { useState, useEffect } from "react";
+import IAMService from "/lib/IAMService";
 
-export default function Modal({setIsOpen, userName}) {
+export default function Modal({setIsOpen}) {
     const [noteName, setNoteName] = useState("");
     const [note, setNote] = useState("");
 
     const createNote = async () => {
         try {
+            const userName = IAMService.getName();
             const newToken = await IAMService.getToken();
             console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
             const response = await fetch('/api/createNote', {
@@ -16,7 +18,7 @@ export default function Modal({setIsOpen, userName}) {
                 Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
                 },
                 body: JSON.stringify({
-                "userName:" : userName,
+                "userName" : userName,
                 "noteName" : noteName,
                 "note": note
                 })
@@ -27,18 +29,12 @@ export default function Modal({setIsOpen, userName}) {
             }
         
             const data = await response.json();
-            setApiResponse(data); // Set the response to state
+            //setApiResponse(data); // Set the response to state
             } catch (error) {
             console.error('Error during API call:', error);
-            setApiResponse({ error: error.message });
+            //setApiResponse({ error: error.message });
         }
     };
-
-
-    const test = () => {
-        console.log(noteName);
-        console.log(note);
-    }
     
     return (
         <div className={styles.modal}>
@@ -54,7 +50,7 @@ export default function Modal({setIsOpen, userName}) {
                
 
                 <div className={styles.bottomMenu}>
-                    <button onClick={() => test()}>Save</button>
+                    <button onClick={() => createNote()}>Save</button>
                     <button onClick={() => setIsOpen(false)}>Cancel</button>
                 </div>
             </div>

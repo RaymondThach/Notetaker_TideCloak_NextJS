@@ -137,7 +137,7 @@ export default function NoteTaker() {
             Notes
           </div>
           { isOpen
-            ? <Modal setIsOpen={setIsOpen} userName = {userName}/>
+            ? <Modal setIsOpen={setIsOpen}/>
             : null
           }
         </div>
