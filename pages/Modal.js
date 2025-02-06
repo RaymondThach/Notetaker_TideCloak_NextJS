@@ -28,7 +28,7 @@ export default function Modal({setIsOpen}) {
                 throw `API call failed: ${response.statusText}`;
             }
         
-            const data = await response.json();
+            //const data = await response.json();
             //setApiResponse(data); // Set the response to state
             } catch (error) {
             console.error('Error during API call:', error);
@@ -50,7 +50,7 @@ export default function Modal({setIsOpen}) {
                
 
                 <div className={styles.bottomMenu}>
-                    <button onClick={() => createNote()}>Save</button>
+                    <button onClick={async () => {await createNote(); setIsOpen(false);}}>Save</button>
                     <button onClick={() => setIsOpen(false)}>Cancel</button>
                 </div>
             </div>
