@@ -16,25 +16,91 @@ import Modal from "./Modal";
 export default function NoteTaker() {
   const [userName, setUserName] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [apiResponse, setApiResponse] = useState(null);  
+
+
+  const createUser = async () => {
+    // An example for securely fetching information from resource server
+    try {
+      const newToken = await IAMService.getToken();
+      const name = IAMService.getName();
+      console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
+      const response = await fetch('/api/createUser', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+        },
+        body: JSON.stringify({
+          "userName": name
+        })
+      });
+
+      if (!response.ok) {
+        throw `API call failed: ${response.statusText}`;
+      }
+
+      const data = await response.json();
+      setApiResponse(data); // Set the response to state
+      setUserName(name);
+    } catch (error) {
+      console.error('Error during API call:', error);
+      setApiResponse({ error: error.message });
+    }
+  };
+
+  const getUserId = async () => {
+    // An example for securely fetching information from resource server
+    try {
+      const newToken = await IAMService.getToken();
+      const name = IAMService.getName();
+      console.log(name);
+      console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
+      const response = await fetch('/api/getUserId', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+        },
+        body: JSON.stringify({
+          "userName": name
+        })
+      });
+
+      if (!response.ok) {
+        throw `API call failed: ${response.statusText}`;
+      }
+
+      const data = await response.json();
+      setApiResponse(data); // Set the response to state
+    } catch (error) {
+      console.error('Error during API call:', error);
+      setApiResponse({ error: error.message });
+    }
+  };
 
   // Create the authenticated user in the database if they don't exist there yet
-  async function createUser() {
-    const name = IAMService.getName();
-    await fetch('http://localhost:8000/notes/createUser', {
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        "userName": name
-      })
-    });
-    setUserName(name);
-  }
+  // async function createUser() {
+  //   const name = IAMService.getName();
+  //   await fetch('http://localhost:8000/notes/createUser', {
+  //     method: 'post',
+  //     headers: {
+  //       accept: 'application/json',
+  //       Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+  //     },
+  //     body: JSON.stringify({
+  //       "userName": name
+  //     })
+  //   });
+  //   setUserName(name);
+  // }
 
   // Reconnect to TideCloak and sync the authenticated user with the database on initial render
   useEffect(() => {
     // Re-init Keycloak in the browser (to read token, handle logout, etc.)
     IAMService.initIAM(() => {
-      createUser();
+      //createUser();
+      //getUserId();
     });
   }, []);
 

@@ -7,11 +7,16 @@ export default function Modal() {
                 <div className={styles.topMenu}>
                     <button>X</button>
                 </div>
-                <h className={styles.header}>Note</h>
+                <h1 className={styles.header}>Note</h1>
                 <p className={styles.titleHeader}>Title:</p>
-                <input className={styles.titleInput} name="titleInput" />
+                <label className={styles.titleInput}>
+                    <input className={styles.titleInput} name="titleInput" />
+                </label>
+                
                 <p className={styles.noteHeader}>Notes:</p>
-                <input className={styles.noteInput} name="noteInput" />
+                <label className={styles.noteInput}>
+                    <input  name="noteInput" />
+                </label>
                 <div className={styles.bottomMenu}>
                     <button>Save</button>
                     <button>Cancel</button>
