@@ -47,8 +47,6 @@ export default function Modal({setIsOpen}) {
                 <input className={styles.titleInput} name="titleInput" onChange= {e => setNoteName(e.target.value)}/>
                 <p className={styles.noteHeader}>Notes:</p>
                 <input className={styles.noteInput} name="noteInput" onChange={e => setNote(e.target.value)}/>
-               
-
                 <div className={styles.bottomMenu}>
                     <button onClick={async () => {await createNote(); setIsOpen(false);}}>Save</button>
                     <button onClick={() => setIsOpen(false)}>Cancel</button>

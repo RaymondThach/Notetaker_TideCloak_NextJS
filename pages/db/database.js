@@ -115,9 +115,9 @@ export default class Database {
     }
 
     //Get all notes owned by authenticated user from NotesTable
-    async allNotes(userName) {
+    async getAllNotes(data) {
         const request = this.poolconnection.request();
-        const result = await request.query(`SELECT * FROM NotesTable WHERE userName='${userName}'`);
+        const result = await request.query(`SELECT * FROM NotesTable WHERE userName='${data.userName}'`);
         return result;
     }
 

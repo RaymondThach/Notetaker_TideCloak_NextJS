@@ -18,12 +18,10 @@ export default function NoteTaker() {
   const [isOpen, setIsOpen] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);  
 
-
   const syncDb = async () => {
     try {
       const newToken = await IAMService.getToken();
       const name = IAMService.getName();
-      console.log(name);
       console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
       const response = await fetch('/api/syncDb', {
         method: 'POST',
@@ -51,35 +49,66 @@ export default function NoteTaker() {
     }
   };
 
-  const getUserId = async () => {
-    // An example for securely fetching information from resource server
+  const getAllNotes = async (userName) => {
     try {
       const newToken = await IAMService.getToken();
-      const name = IAMService.getName();
-      console.log(name);
+      console.log(userName);
       console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
-      const response = await fetch('/api/getUserId', {
+      const response = await fetch('/api/getAllNotes', {
         method: 'POST',
         headers: {
           accept: 'application/json',
           Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
         },
         body: JSON.stringify({
-          "userName": name
+          "userName": userName
         })
       });
 
       if (!response.ok) {
         throw `API call failed: ${response.statusText}`;
       }
-
-      const data = await response.json();
-      setApiResponse(data); // Set the response to state
+      else {
+        const data = await response.json();
+        console.log(data); // TODO: DO SOMETHING IT
+      }
+      
+      //setApiResponse(data); // Set the response to state
     } catch (error) {
       console.error('Error during API call:', error);
-      setApiResponse({ error: error.message });
+      //setApiResponse({ error: error.message });
     }
   };
+
+  // const getUserId = async () => {
+  //   // An example for securely fetching information from resource server
+  //   try {
+  //     const newToken = await IAMService.getToken();
+  //     const name = IAMService.getName();
+  //     console.log(name);
+  //     console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
+  //     const response = await fetch('/api/getUserId', {
+  //       method: 'POST',
+  //       headers: {
+  //         accept: 'application/json',
+  //         Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+  //       },
+  //       body: JSON.stringify({
+  //         "userName": name
+  //       })
+  //     });
+
+  //     if (!response.ok) {
+  //       throw `API call failed: ${response.statusText}`;
+  //     }
+
+      
+  //     //setApiResponse(data); // Set the response to state
+  //   } catch (error) {
+  //     console.error('Error during API call:', error);
+  //     //setApiResponse({ error: error.message });
+  //   }
+  // };
 
   // Create the authenticated user in the database if they don't exist there yet
   // async function createUser() {
@@ -104,8 +133,13 @@ export default function NoteTaker() {
       //createUser();
       //getUserId();
       syncDb();
+      
     });
   }, []);
+
+  useEffect(() => {
+    getAllNotes(userName);
+  }, [userName]);
 
   // useEffect(() => {
   //   console.log(userName);

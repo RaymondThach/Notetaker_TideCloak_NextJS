@@ -28,8 +28,8 @@ export default async function handler(req, res) {
     }
     else {
       const data = JSON.parse(req.body);
-      const rowsAffected = await database.createNote(data);
-      res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected});
+      const rowsAffected = await database.getAllNotes(data);
+      res.status(201).json({rowsAffected});
     }
 
   } catch (error) {
