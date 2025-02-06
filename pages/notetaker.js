@@ -20,7 +20,6 @@ export default function NoteTaker() {
 
 
   const syncDb = async () => {
-    // An example for securely fetching information from resource server
     try {
       const newToken = await IAMService.getToken();
       const name = IAMService.getName();

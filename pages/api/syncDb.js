@@ -27,7 +27,6 @@ export default async function handler(req, res) {
       return res.status(403).json({ error: 'Forbidden: Invalid token or role' });
     }
     else {
-      //console.log('reached');
       const data = JSON.parse(req.body);
       const rowsAffected = await database.createUser(data);
       res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})

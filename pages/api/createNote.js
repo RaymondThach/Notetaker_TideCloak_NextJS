@@ -27,12 +27,10 @@ export default async function handler(req, res) {
       return res.status(403).json({ error: 'Forbidden: Invalid token or role' });
     }
     else {
-      const name = user.vuid;
-      const id = await database.getUserId(name);
-      res.status(200).json(id);
+      const data = JSON.parse(req.body);
+      const rowsAffected = await database.createNote(data);
+      res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})
     }
-    
-    //res.status(200).json({ vuid: user.vuid, userkey: user.tideuserkey });
 
   } catch (error) {
     console.error('Token verification failed:', error);
