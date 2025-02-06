@@ -15,6 +15,7 @@ export default function ProtectedPage() {
     IAMService.initIAM(() => {
       if (IAMService.isLoggedIn()) {
 	// An example on collecting user information to peform client side operations (i.e. display)
+        console.log(IAMService.getName()); 
         setUsername(IAMService.getName() || "unknown-user");
         setHasUMARole(IAMService.hasOneRole( 'uma_authorization' ));
       }

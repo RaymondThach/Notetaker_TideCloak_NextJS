@@ -1,5 +1,5 @@
-import { passwordConfig as SQLAuthentication } from '/db/config.js';
-import { createDatabaseConnection } from '/db/database.js';
+import { passwordConfig as SQLAuthentication } from '../db/config.js';
+import { createDatabaseConnection } from '../db/database.js';
 
 // This is an example for an API endpoint that serves sensitive information for an authenticated user's session
 import { verifyTideCloakToken } from '/lib/tideJWT';
@@ -27,9 +27,10 @@ export default async function handler(req, res) {
       return res.status(403).json({ error: 'Forbidden: Invalid token or role' });
     }
     else {
-        const username = req.body;
-        const rowsAffected = await database.createUser(username);
-        res.status(201).json({ vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})
+      //console.log('reached');
+      const data = JSON.parse(req.body);
+      const rowsAffected = await database.createUser(data);
+      res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})
     }
     
     //res.status(200).json({ vuid: user.vuid, userkey: user.tideuserkey });

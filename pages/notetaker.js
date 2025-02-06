@@ -19,13 +19,14 @@ export default function NoteTaker() {
   const [apiResponse, setApiResponse] = useState(null);  
 
 
-  const createUser = async () => {
+  const syncDb = async () => {
     // An example for securely fetching information from resource server
     try {
       const newToken = await IAMService.getToken();
       const name = IAMService.getName();
+      console.log(name);
       console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
-      const response = await fetch('/api/createUser', {
+      const response = await fetch('/api/syncDb', {
         method: 'POST',
         headers: {
           accept: 'application/json',
@@ -39,10 +40,12 @@ export default function NoteTaker() {
       if (!response.ok) {
         throw `API call failed: ${response.statusText}`;
       }
+      else {
+        setUserName(name);
+      }
 
       const data = await response.json();
       setApiResponse(data); // Set the response to state
-      setUserName(name);
     } catch (error) {
       console.error('Error during API call:', error);
       setApiResponse({ error: error.message });
@@ -101,6 +104,7 @@ export default function NoteTaker() {
     IAMService.initIAM(() => {
       //createUser();
       //getUserId();
+      syncDb();
     });
   }, []);
 
