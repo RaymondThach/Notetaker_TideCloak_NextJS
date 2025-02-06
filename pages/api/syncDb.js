@@ -32,8 +32,6 @@ export default async function handler(req, res) {
       const rowsAffected = await database.createUser(data);
       res.status(201).json({vuid: user.vuid, userkey: user.tideuserkey, rowsAffected})
     }
-    
-    //res.status(200).json({ vuid: user.vuid, userkey: user.tideuserkey });
 
   } catch (error) {
     console.error('Token verification failed:', error);
