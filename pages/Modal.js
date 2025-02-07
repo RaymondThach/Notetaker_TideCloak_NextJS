@@ -73,6 +73,7 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
 
     const updateNote = async (noteId) => {
         try {
+            const userName = IAMService.getName();
             const newToken = await IAMService.getToken();
             console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
             const response = await fetch('/api/updateNote', {
@@ -83,12 +84,12 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
             },
             body: JSON.stringify({
                 "noteId": noteId,
-                "newName" : newName,
-                "newNote" : newNote
+                "newName" : noteName,
+                "newNote" : note
                 })
             });
 
-            if (!response.status === 204) {
+            if (!response.ok) {
                 throw `API call failed: ${response.statusText}`;
             }
             else {
@@ -104,13 +105,11 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
 
     const saveHandler = async (noteId) => {
         if (noteId === null) {
-            console.log("reached");
             await createNote(); 
             setIsOpen(false);
         }
         else {
-            console.log("it isn't null");
-            await updateNote();
+            await updateNote(noteId);
             setIsOpen(false);
         } 
     };
@@ -131,7 +130,7 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
                 <p className={styles.titleHeader}>Title:</p>
                 <input className={styles.titleInput} name="titleInput" value={noteName} onChange={e => setNoteName(e.target.value)}/>
                 <p className={styles.noteHeader}>Notes:</p>
-                <input className={styles.noteInput} name="noteInput" value={noteName} onChange={e => setNote(e.target.value)}/>
+                <input className={styles.noteInput} name="noteInput" value={note} onChange={e => setNote(e.target.value)}/>
                 <div className={styles.bottomMenu}>
                     <button onClick={async () => saveHandler(noteId)}>Save</button>
                     <button onClick={() => setIsOpen(false)}>Cancel</button>

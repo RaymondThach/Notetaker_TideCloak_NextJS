@@ -158,7 +158,7 @@ export default class Database {
     // Update an authenticated user's note in NotesTable
     async updateNote(data) {
         this.executeQuery(
-         `UPDATE NotesTable SET note='${data.newNote}', noteName='${data.newName}' WHERE id = ${data.id}`
+         `UPDATE NotesTable SET note='${data.newNote}', noteName='${data.newName}' WHERE id = ${data.noteId}`
         )
         .then(() => {
             console.log('Note updated');
