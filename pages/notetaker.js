@@ -17,6 +17,7 @@ export default function NoteTaker() {
   const [userName, setUserName] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);  
+  const [notes, setAllNotes] = useState([]);
 
   const syncDb = async () => {
     try {
@@ -70,7 +71,7 @@ export default function NoteTaker() {
       }
       else {
         const data = await response.json();
-        console.log(data); // TODO: DO SOMETHING IT
+        setAllNotes(data.rowsAffected);
       }
       
       //setApiResponse(data); // Set the response to state
@@ -168,7 +169,23 @@ export default function NoteTaker() {
         </div>
         <div className = {styles.content}>
           <div>
-            Notes
+            {
+              notes.length === 0
+              ? <p>No sticky notes yet</p>
+              :
+              <div className={styles.notes}>
+                {
+                  notes.map((note, i) => (
+                      <div className={styles.note} key={i.noteName}>
+                        <p>{note.noteName}</p>
+                        <button className= {styles.editButton} onClick = {() => console.log("EDITING")}>Edit</button>
+                        <button className= {styles.delButton} onClick = {() => console.log("DELETING")}>Delete</button>
+                      </div>
+                    )
+                  )
+                }
+              </div>
+            }
           </div>
           { isOpen
             ? <Modal setIsOpen={setIsOpen}/>

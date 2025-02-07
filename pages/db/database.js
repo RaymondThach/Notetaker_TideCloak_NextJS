@@ -118,7 +118,7 @@ export default class Database {
     async getAllNotes(data) {
         const request = this.poolconnection.request();
         const result = await request.query(`SELECT * FROM NotesTable WHERE userName='${data.userName}'`);
-        return result;
+        return result.recordset;
     }
 
     //Create a note for authenticated user if they haven't created a note of the same name in NotesTable

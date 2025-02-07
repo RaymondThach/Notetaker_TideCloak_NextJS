@@ -27,11 +27,11 @@
 }
 
 .createButton {
-    margin-right: 10%;
+    margin-right: 7.5%;
 }
 
 .logoutButton {
-    margin-right: 1%;
+    margin-right: 5%;
 }
 
 .header {
@@ -50,3 +50,31 @@
     background-color: red;
 }
 
+/* .noNotes {
+
+} */
+
+.notes {
+    position: relative;
+    margin: 1%;
+    display: grid;
+    grid-template-columns: 1;
+    gap: 1%;
+    background-color: aliceblue;
+}
+
+.note {
+    display: grid;
+    grid-template-columns: 3fr 0.5fr 0.5fr;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.editButton {
+    margin: 5%;
+    
+}
+
+.delButton {
+    margin: 5%;
+}
