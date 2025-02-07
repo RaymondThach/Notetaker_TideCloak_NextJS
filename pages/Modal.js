@@ -2,7 +2,7 @@ import styles from "./modal.module.css";
 import { useState, useEffect } from "react";
 import IAMService from "/lib/IAMService";
 
-export default function Modal({setIsOpen}) {
+export default function Modal({setIsOpen, setAllNotes, getAllNotes}) {
     const [noteName, setNoteName] = useState("");
     const [note, setNote] = useState("");
 
@@ -24,8 +24,11 @@ export default function Modal({setIsOpen}) {
                 })
             });
         
-            if (!response.ok) {
+            if (!response.status === 201) {
                 throw `API call failed: ${response.statusText}`;
+            }
+            else {
+                getAllNotes(userName);
             }
         
             //const data = await response.json();

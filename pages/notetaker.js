@@ -216,7 +216,7 @@ export default function NoteTaker() {
             }
           </div>
           { isOpen
-            ? <Modal setIsOpen={setIsOpen}/>
+            ? <Modal setIsOpen={setIsOpen} setAllNotes={setAllNotes} getAllNotes={() => getAllNotes(userName)}/>
             : null
           }
         </div>
