@@ -1,6 +1,6 @@
 import sql from 'mssql';
 
-//The database connection and functions to passed onto routes in notes.js
+// The database connection and functions to passed onto routes in notes.js
 let database = null;
 
 export default class Database {
@@ -9,12 +9,12 @@ export default class Database {
     poolconnection = null;
     connected = false;
 
-    //Assign config.js connections config here
+    // Assign config.js connections config here
     constructor(config) {
         this.config = config;
     }
 
-    //Establish connection with the SQL Database
+    // Establish connection with the SQL Database
     async connect() {
         try {
         this.poolconnection = await sql.connect(this.config);
@@ -39,14 +39,14 @@ export default class Database {
     //     }
     // }
 
-    //Execute queries based on the established connection to SQL Database
+    // Execute queries based on the established connection to SQL Database
     async executeQuery(query) {
         const request = this.poolconnection.request();
         const result = await request.query(query);
         return result.rowsAffected[0];
     }
 
-    //Create table of users, cascades to NotesTable
+    // Create table of users, cascades to NotesTable
     async createUsersTable() {
         this.executeQuery(
             `IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UsersTable')
@@ -67,7 +67,7 @@ export default class Database {
         });
     }
 
-    //Creates the table of notes owned by users in UsersTable
+    // Creates the table of notes owned by users in UsersTable
     async createNotesTable() {
         this.executeQuery(
             `IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'NotesTable')
@@ -93,7 +93,7 @@ export default class Database {
         });
     }
 
-    //Create a user from the client's authenticated username if not already in UsersTable
+    // Create a user from the client's authenticated username if not already in UsersTable
     async createUser(data) {
         this.executeQuery(
         `IF NOT EXISTS (SELECT * FROM UsersTable WHERE userName = '${data.userName}')
@@ -107,21 +107,21 @@ export default class Database {
         });
     }
 
-    //Get authenticated user id by user name from UsersTable
+    // Get authenticated user id by user name from UsersTable
     async getUserId(name) {
         const request = this.poolconnection.request();
         const result = await request.query(`SELECT id FROM UsersTable WHERE userName = '${name}'`);
         return result.recordsets[0];
     }
 
-    //Get all notes owned by authenticated user from NotesTable
+    // Get all notes owned by authenticated user from NotesTable
     async getAllNotes(data) {
         const request = this.poolconnection.request();
         const result = await request.query(`SELECT * FROM NotesTable WHERE userName='${data.userName}'`);
         return result.recordset;
     }
 
-    //Create a note for authenticated user if they haven't created a note of the same name in NotesTable
+    // Create a note for authenticated user if they haven't created a note of the same name in NotesTable
     async createNote(data) {
         this.executeQuery(
         `IF NOT EXISTS (SELECT * FROM NotesTable WHERE userName = '${data.userName}' AND noteName = '${data.noteName}')
@@ -135,7 +135,7 @@ export default class Database {
         });
     }
 
-    //Delete a note for the authenticated user from NotesTable
+    // Delete a note for the authenticated user from NotesTable
     async deleteNote(id) {
         this.executeQuery(
         `DELETE FROM NotesTable WHERE id = ${id.noteId}`
@@ -148,7 +148,14 @@ export default class Database {
         });    
     }
 
-    //Update an authenticated user's note in NotesTable
+    // Get a single note for the authenticated user to edit
+    async getNote(id) {
+        const request = this.poolconnection.request();
+        const result = await request.query(`SELECT * FROM NotesTable WHERE id = ${id.noteId}`);
+        return result.recordset;
+    }
+
+    // Update an authenticated user's note in NotesTable
     async updateNote(data) {
         this.executeQuery(
          `UPDATE NotesTable SET note='${data.newNote}', noteName='${data.newName}' WHERE id = ${data.id}`
@@ -162,7 +169,7 @@ export default class Database {
     }
 }
 
-//Initiates one connection to SQL server and creates tables so routes can access them
+// Initiates one connection to SQL server and creates tables so routes can access them
 export const createDatabaseConnection = async (passwordConfig) => {
     database = new Database(passwordConfig);
     await database.connect();

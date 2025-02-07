@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import IAMService from "/lib/IAMService";
 
 export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
-    const [noteName, setNoteName] = useState("");
-    const [note, setNote] = useState("");
+    const [noteName, setNoteName] = useState();
+    const [note, setNote] = useState();
 
     const createNote = async () => {
         try {
@@ -40,6 +40,37 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
         }
     };
     
+    const getNote = async (noteId) => {
+        try {
+            const newToken = await IAMService.getToken();
+            console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
+            const response = await fetch('/api/getNote', {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+            },
+            body: JSON.stringify({
+                "noteId": noteId,
+                })
+            });
+
+            if (!response.ok) {
+                throw `API call failed: ${response.statusText}`;
+            }
+            else {
+                const data = await response.json();
+                setNoteName(data.rowsAffected[0].noteName);
+                setNote(data.rowsAffected[0].note);
+            }
+            
+            //setApiResponse(data); // Set the response to state
+        } catch (error) {
+            console.error('Error during API call:', error);
+            //setApiResponse({ error: error.message });
+        }
+    };
+
     const updateNote = async (noteId) => {
         try {
             const newToken = await IAMService.getToken();
@@ -54,14 +85,14 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
                 "noteId": noteId,
                 "newName" : newName,
                 "newNote" : newNote
-            })
+                })
             });
 
             if (!response.status === 204) {
-            throw `API call failed: ${response.statusText}`;
+                throw `API call failed: ${response.statusText}`;
             }
             else {
-            getAllNotes(userName);
+                getAllNotes(userName);
             }
             
             //setApiResponse(data); // Set the response to state
@@ -86,7 +117,7 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
     
     useEffect(() => {
         if (noteId) {
-            console.log(noteId);
+            getNote(noteId);
         }
     }, [])
 
@@ -98,9 +129,9 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
                 </div>
                 <h1 className={styles.header}>Note</h1>
                 <p className={styles.titleHeader}>Title:</p>
-                <input className={styles.titleInput} name="titleInput" onChange= {e => setNoteName(e.target.value)}/>
+                <input className={styles.titleInput} name="titleInput" value={noteName} onChange={e => setNoteName(e.target.value)}/>
                 <p className={styles.noteHeader}>Notes:</p>
-                <input className={styles.noteInput} name="noteInput" onChange={e => setNote(e.target.value)}/>
+                <input className={styles.noteInput} name="noteInput" value={noteName} onChange={e => setNote(e.target.value)}/>
                 <div className={styles.bottomMenu}>
                     <button onClick={async () => saveHandler(noteId)}>Save</button>
                     <button onClick={() => setIsOpen(false)}>Cancel</button>
