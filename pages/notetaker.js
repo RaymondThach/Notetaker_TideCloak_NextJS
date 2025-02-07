@@ -81,6 +81,34 @@ export default function NoteTaker() {
     }
   };
 
+  const deleteNote = async (noteId) => {
+    try {
+      const newToken = await IAMService.getToken();
+      console.debug('[fetchEndpoint] Token valid for ' + IAMService.getTokenExp() + ' seconds');
+      const response = await fetch('/api/deleteNote', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
+        },
+        body: JSON.stringify({
+          "noteId": noteId
+        })
+      });
+
+      if (!response.status === 204) {
+        throw `API call failed: ${response.statusText}`;
+      }
+      else {
+        getAllNotes(userName);
+      }
+      
+      //setApiResponse(data); // Set the response to state
+    } catch (error) {
+      console.error('Error during API call:', error);
+      //setApiResponse({ error: error.message });
+    }
+  };
   // const getUserId = async () => {
   //   // An example for securely fetching information from resource server
   //   try {
@@ -143,8 +171,8 @@ export default function NoteTaker() {
   }, [userName]);
 
   // useEffect(() => {
-  //   console.log(userName);
-  // }, [userName]);
+  //   getAllNotes(userName);
+  // }, [notes]);
 
   const handleLogout = () => {
     IAMService.doLogout();
@@ -176,10 +204,10 @@ export default function NoteTaker() {
               <div className={styles.notes}>
                 {
                   notes.map((note, i) => (
-                      <div className={styles.note} key={i.noteName}>
+                      <div className={styles.note} key={i.id}>
                         <p>{note.noteName}</p>
                         <button className= {styles.editButton} onClick = {() => console.log("EDITING")}>Edit</button>
-                        <button className= {styles.delButton} onClick = {() => console.log("DELETING")}>Delete</button>
+                        <button className= {styles.delButton} onClick = {() => deleteNote(note.id)}>Delete</button>
                       </div>
                     )
                   )

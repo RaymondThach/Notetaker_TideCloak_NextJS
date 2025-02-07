@@ -138,7 +138,7 @@ export default class Database {
     //Delete a note for the authenticated user from NotesTable
     async deleteNote(id) {
         this.executeQuery(
-        `DELETE FROM NotesTable WHERE id = ${id}`
+        `DELETE FROM NotesTable WHERE id = ${id.noteId}`
         )
         .then(() => {
             console.log('Note deleted');
