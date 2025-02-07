@@ -50,9 +50,9 @@
     background-color: red;
 }
 
-/* .noNotes {
-
-} */
+.noNotes {
+    text-align: center;
+}
 
 .notes {
     position: relative;

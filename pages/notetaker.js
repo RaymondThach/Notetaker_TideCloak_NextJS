@@ -18,6 +18,7 @@ export default function NoteTaker() {
   const [isOpen, setIsOpen] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);  
   const [notes, setAllNotes] = useState([]);
+  const [noteId, setNoteId] = useState(null);
 
   const syncDb = async () => {
     try {
@@ -139,21 +140,8 @@ export default function NoteTaker() {
   //   }
   // };
 
-  // Create the authenticated user in the database if they don't exist there yet
-  // async function createUser() {
-  //   const name = IAMService.getName();
-  //   await fetch('http://localhost:8000/notes/createUser', {
-  //     method: 'post',
-  //     headers: {
-  //       accept: 'application/json',
-  //       Authorization: `Bearer ${newToken}`, // Add the token to the Authorization header
-  //     },
-  //     body: JSON.stringify({
-  //       "userName": name
-  //     })
-  //   });
-  //   setUserName(name);
-  // }
+  
+
 
   // Reconnect to TideCloak and sync the authenticated user with the database on initial render
   useEffect(() => {
@@ -199,14 +187,14 @@ export default function NoteTaker() {
           <div>
             {
               notes.length === 0
-              ? <p>No sticky notes yet</p>
+              ? <p className={styles.noNotes}>No sticky notes yet</p>
               :
               <div className={styles.notes}>
                 {
                   notes.map((note, i) => (
                       <div className={styles.note} key={i.id}>
                         <p>{note.noteName}</p>
-                        <button className= {styles.editButton} onClick = {() => console.log("EDITING")}>Edit</button>
+                        <button className= {styles.editButton} onClick = {() => {setNoteId(note.id); setIsOpen(true);}}>Edit</button>
                         <button className= {styles.delButton} onClick = {() => deleteNote(note.id)}>Delete</button>
                       </div>
                     )
@@ -216,7 +204,7 @@ export default function NoteTaker() {
             }
           </div>
           { isOpen
-            ? <Modal setIsOpen={setIsOpen} setAllNotes={setAllNotes} getAllNotes={() => getAllNotes(userName)}/>
+            ? <Modal setIsOpen={setIsOpen} setAllNotes={setAllNotes} getAllNotes={() => getAllNotes(userName)} noteId={noteId}/>
             : null
           }
         </div>
