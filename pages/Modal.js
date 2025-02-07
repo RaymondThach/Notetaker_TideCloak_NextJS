@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import IAMService from "/lib/IAMService";
 
 export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
-    const [noteName, setNoteName] = useState();
-    const [note, setNote] = useState();
+    const [noteName, setNoteName] = useState("");
+    const [note, setNote] = useState("");
 
     const createNote = async () => {
         try {
