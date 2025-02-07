@@ -28,7 +28,6 @@ export default function Modal({setIsOpen, setAllNotes, getAllNotes, noteId}) {
                 throw `API call failed: ${response.statusText}`;
             }
             else {
-                console.log("the auto refresher");
                 getAllNotes(userName);
             }
         
